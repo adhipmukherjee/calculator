@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CGPA/SGPA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            padding-top: 40px;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .calculator {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            animation: fade-in 1s ease;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-row {
+            margin-bottom: 15px;
+            animation: slide-in 1s ease;
+        }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .input-label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        .input-field {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .calculate-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            animation: scale-in 0.5s ease;
+        }
+
+        @keyframes scale-in {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .result {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .social-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 24px;
+            color: #000000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <div class="calculator">
+        <div class="input-row">
+            <label class="input-label" for="points">Subject Points:</label>
+            <input class="input-field" type="text" id="points" placeholder="8, 8, 8, 8, 8, 9, 9, 9">
+        </div>
+        <div class="input-row">
+            <label class="input-label" for="credit-points">Credits:</label>
+            <input class="input-field" type="text" id="credit-points" placeholder="3, 3, 3, 3, 3, 3, 3, 2">
+        </div>
+        <button class="calculate-button" onclick="calculateSGPA()">Calculate SGPA</button>
+        <div class="result" id="sgpa-result"></div>
+        <div class="input-row">
+            <label class="input-label" for="sgpa-list">SGPA List:</label>
+            <input class="input-field" type="text" id="sgpa-list" placeholder="8.98, 8.97, 9.02, 9.04, 7.48, 8.35">
+        </div>
+        <button class="calculate-button" onclick="calculateCGPA()">Calculate CGPA</button>
+        <div class="result" id="cgpa-result"></div>
+        <div class="social-links">
+            <a href="mailto:adhipmukherjee12@gmail.com"><i class="far fa-envelope"></i></a>
+            <a href="https://www.instagram.com/chromeslugx/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com/chromeslugs" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/adhip-mukhopadhyay-2a4456199/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/adhipmukherjee" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.reddit.com/user/knightr0gen_" target="_blank"><i class="fab fa-reddit"></i></a>
+            <!-- Add more social media links as needed -->
+        </div>         
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
+    <script>
+        function calculateSGPA() {
+            var pointsInput = document.getElementById('points').value;
+            var creditPointsInput = document.getElementById('credit-points').value;
+
+            var points = pointsInput.split(',').map(Number);
+            var creditPoints = creditPointsInput.split(',').map(Number);
+
+            var totalCreditPoints = creditPoints.reduce((a, b) => a + b, 0);
+            var weightedSum = points.reduce((a, b, i) => a + b * creditPoints[i], 0);
+            var sgpa = weightedSum / totalCreditPoints;
+            sgpa = sgpa.toFixed(2);
+
+            document.getElementById('sgpa-result').textContent = 'SGPA: ' + sgpa;
+        }
+
+        function calculateCGPA() {
+            var sgpaListInput = document.getElementById('sgpa-list').value;
+            var sgpaList = sgpaListInput.split(',').map(Number);
+
+            var totalSgpa = sgpaList.reduce((a, b) => a + b, 0);
+            var cgpa = totalSgpa / sgpaList.length;
+            cgpa = cgpa.toFixed(2);
+
+            document.getElementById('cgpa-result').textContent = 'CGPA: ' + cgpa;
+        }
+    </script>
+</body>
+</html>
